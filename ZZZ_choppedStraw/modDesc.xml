@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="30">
+	<author>webalizer</author>
+	<version>17.01b</version>
+	<title>
+		<en>Chopped Straw For Harvesters</en>
+		<de>Gehäckseltes Stroh für Erntemaschinen</de>
+		<fr>Paille hachée pour les moissonneuses</fr>
+	</title>
+	<description>
+		<en><![CDATA[With activated chopper straw is left on the field.]]></en>
+		<de><![CDATA[Bei aktiviertem Strohhäcksler bleibt Stroh auf dem Feld zurück.]]></de>
+		<fr><![CDATA[La paille hachée reste sur le champ après l'utilisation du broyeur sur une moissonneuse.]]></fr>
+	</description>
+	<iconFilename>ChoppedStraw.dds</iconFilename>
+	<multiplayer supported="true"/>
+	<extraSourceFiles>
+		<sourceFile filename="register.lua" />
+	</extraSourceFiles>
+</modDesc>
