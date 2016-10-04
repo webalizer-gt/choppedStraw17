@@ -1,6 +1,7 @@
 choppedStraw
 ============
-This specialization for Farming Simulator 17 adds a layer with chopped material for wheat, barley, rape, maize, sunflower and soja.
+This specialization for Farming Simulator 17 adds a layer with chopped material for wheat, barley, rape, maize, sunflower and soybean.
+Additional fruittypes can be implemented by the map creator.
 It also inserts a global specialization to appropriate combine harvesters to make this layers visible while harvesting with activated straw chopper.
 
 ###Requirements:

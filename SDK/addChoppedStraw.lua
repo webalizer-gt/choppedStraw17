@@ -95,6 +95,7 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 			print(('Error: missing "name" attribute for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted.'):format(a));
 			break;
 		end;
+		local strawTypeFoliageId = g_currentMission:loadFoliageLayer(strawType, -5, -1, true, "alphaBlendStartEnd");
 
 		local b = 0;
 		while true do
@@ -113,6 +114,7 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 			end;
 			ChoppedStraw.strawBindings[bindingFruitType] = {
 				strawType = strawType,
+				strawTypeFoliageId = strawTypeFoliageId,
 				strawOutputFront = bindingStrawOutputFront,
 				allowFertilization = bindingAllowFertilization,
 				soilmodN = bindingSoilmodN,

@@ -65,49 +65,33 @@ function ChoppedStraw_Register:update(dt)
 		ChoppedStraw_Register.old_UpdateDestroyCommonArea = Utils.updateDestroyCommonArea;
 		Utils.updateDestroyCommonArea = ChoppedStraw_Register.updateDestroyCommonArea;
 
-		ChoppedStraw_Register.old_updateSowingArea = Utils.updateSowingArea;
-		Utils.updateSowingArea = ChoppedStraw_Register.updateSowingArea;
     --end;
   end;
 end;
 
 function ChoppedStraw_Register.updateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField)
 	ChoppedStraw_Register.old_UpdateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField);
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDSTRAW] then
-		Utils.updateDensity(g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDSTRAW].preparingOutputId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
-	end;
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDMAIZE] then
-		Utils.updateDensity(g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDMAIZE].preparingOutputId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
-	end;
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDRAPE] then
-	Utils.updateDensity(g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDRAPE].preparingOutputId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
-	end;
-end;
 
-function ChoppedStraw_Register.updateSowingArea(fruitId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, angle, useDirectPlanting)
-	local numPixels, numDetailPixels = ChoppedStraw_Register.old_updateSowingArea(fruitId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, angle, useDirectPlanting);
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDSTRAW] then
-		Utils.updateDensity(g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDSTRAW].preparingOutputId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
+	for _,entry in ipairs(ChoppedStraw.strawBindings) do
+		Utils.updateDensity(entry.id, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
 	end;
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDMAIZE] then
-		Utils.updateDensity(g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDMAIZE].preparingOutputId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
-	end;
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDRAPE] then
-		Utils.updateDensity(g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDRAPE].preparingOutputId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
-	end;
-
-	return numPixels, numDetailPixels;
 end;
 
 Utils.updateStrawHaulmArea = function(preparingOutputId, x, z, x1, z1, x2, z2)
-	local IDs,detailId = {},g_currentMission.terrainDetailId;
-	table.insert(IDs,g_currentMission.cultivatorChannel);
-	table.insert(IDs,g_currentMission.sowingChannel);
-	table.insert(IDs,g_currentMission.ploughChannel);
-	local dx, dz, dwidthX, dwidthZ, dheightX, dheightZ = Utils.getXZWidthAndHeight(detailId, x, z, x1, z1, x2, z2)
-	for i = 1, table.getn(IDs) do
-		setDensityMaskedParallelogram(preparingOutputId, dx, dz, dwidthX, dwidthZ, dheightX, dheightZ, 0, 1, detailId, IDs[i], 1, 1)
-	end
+	local dx, dz, dwidthX, dwidthZ, dheightX, dheightZ = Utils.getXZWidthAndHeight(nil, x, z, x1, z1, x2, z2)
+	local includeMask =
+		2^g_currentMission.cultivatorChannel
+		+ 2^g_currentMission.sowingChannel
+		+ 2^g_currentMission.ploughChannel;
+	setDensityMaskParams(preparingOutputId, "greater", 0,0,includeMask,0)
+	setDensityMaskedParallelogram(
+		preparingOutputId,
+		dx, dz, dwidthX, dwidthZ, dheightX, dheightZ,
+		0, 1,
+		g_currentMission.terrainDetailId, g_currentMission.terrainDetailTypeFirstChannel, g_currentMission.terrainDetailTypeNumChannels,
+		1
+	)
+	setDensityMaskParams(preparingOutputId, "greater", -1)
 end;
 
 function ChoppedStraw_Register:deleteMap() end;
