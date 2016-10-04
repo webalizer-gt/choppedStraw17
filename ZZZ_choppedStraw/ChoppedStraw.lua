@@ -12,10 +12,10 @@ end;
 
 function ChoppedStraw:load(xmlFile)
 	-- Only activate when chopped-straw "fruits" are available
-	if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDSTRAW]
-	and g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDRAPE]
-	and g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDMAIZE]
-	then
+	--if g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDSTRAW]
+	--and g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDRAPE]
+	--and g_currentMission.fruits[FruitUtil.FRUITTYPE_CHOPPEDMAIZE]
+	--then
 		self.getAreas = ChoppedStraw.getAreas;
 		self.wwMinMaxAreas = ChoppedStraw.wwMinMaxAreas;
 		self.createCStrawArea = ChoppedStraw.createCStrawArea;
@@ -29,14 +29,13 @@ function ChoppedStraw:load(xmlFile)
 		self.strawZOffset = -1.5;
 		self.strawNodeId = Utils.indexToObject(self.components, getXMLString(xmlFile, "vehicle.workAreas.workArea#startIndex"));
 
-		self.cStrawAreas = {}
 		if self.strawNodeId ~= nil then
+      self.cStrawAreas = {}
 			self.cStrawAreas = self:createCStrawArea();
-		end;
-	else
-		-- Disable chopped-straw for this vehicle.
-		self.strawNodeId = nil;
-	end
+	  else
+		  --Disable chopped-straw for this vehicle.
+		  self.strawNodeId = nil;
+	  end;
 end;
 
 function ChoppedStraw:delete()
@@ -86,7 +85,7 @@ function ChoppedStraw:updateTick(dt)
 				end;
 			end;
 		elseif self.chopperPSenabled then
-			if choppedStrawFoliageId ~= nil then
+			if choppedStrawBinding.strawTypeFoliageId ~= nil then
 				for i = 1, table.getn(self.cStrawAreas) do
 					local x, _, z = getWorldTranslation(self.cStrawAreas[i].start)
 					local x1, _, z1 = getWorldTranslation(self.cStrawAreas[i].width)

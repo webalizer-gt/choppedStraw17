@@ -72,12 +72,12 @@ end;
 function ChoppedStraw_Register.updateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField)
 	ChoppedStraw_Register.old_UpdateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField);
 
-	for _,entry in ipairs(ChoppedStraw.strawBindings) do
+	for _,entry in pairs(ChoppedStraw.strawBindings) do
 		Utils.updateDensity(entry.id, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
 	end;
 end;
 
-Utils.updateStrawHaulmArea = function(preparingOutputId, x, z, x1, z1, x2, z2)
+Utils.updateStrawHaulmArea = function(choppedStrawFoliageId, x, z, x1, z1, x2, z2)
 	local dx, dz, dwidthX, dwidthZ, dheightX, dheightZ = Utils.getXZWidthAndHeight(nil, x, z, x1, z1, x2, z2)
 	local includeMask =
 		2^g_currentMission.cultivatorChannel
@@ -91,7 +91,7 @@ Utils.updateStrawHaulmArea = function(preparingOutputId, x, z, x1, z1, x2, z2)
 		g_currentMission.terrainDetailId, g_currentMission.terrainDetailTypeFirstChannel, g_currentMission.terrainDetailTypeNumChannels,
 		1
 	)
-	setDensityMaskParams(preparingOutputId, "greater", -1)
+	setDensityMaskParams(choppedStrawFoliageId, "greater", -1)
 end;
 
 function ChoppedStraw_Register:deleteMap() end;
