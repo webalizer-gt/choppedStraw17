@@ -72,8 +72,15 @@ end;
 function ChoppedStraw_Register.updateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField)
 	ChoppedStraw_Register.old_UpdateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField);
 
+	-- Achtung. ChoppedStraw-Table passt hierfür nicht!!!!
 	for _,entry in pairs(ChoppedStraw.strawBindings) do
 		Utils.updateDensity(entry.id, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
+
+		-- Düngen hier irgendwie einbauen!
+		if (ChoppedStraw.globalFertilization and entry.allowFertilization) then
+
+		end;
+
 	end;
 end;
 

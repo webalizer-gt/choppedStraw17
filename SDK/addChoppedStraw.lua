@@ -62,12 +62,10 @@ function AddChoppedStraw:run(baseDirectory)
 		local key = 'modDesc.AddChoppedStraw';
 
 		if hasXMLProperty(xmlFile, key) then
-
 				print(('AddChoppedStraw v%s by %s loaded'):format(AddChoppedStraw.version, AddChoppedStraw.author));
 				self:registerStrawTypes(xmlFile, key);
 			else
-				print('Error: AddChoppedStraw could not find directory.');
-			end; -- END strawDirectory ~= nil
+				print('Error: missing AddChoppedStraw in modDesc.xml!');
 		end; -- END hasXMLProperty(xmlFile, key)
 		delete(xmlFile);
 	end; -- END fileExists(xmlFilePath)
@@ -95,7 +93,13 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 			print(('Error: missing "name" attribute for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted.'):format(a));
 			break;
 		end;
+		-- One of these two, but which one????
 		local strawTypeFoliageId = g_currentMission:loadFoliageLayer(strawType, -5, -1, true, "alphaBlendStartEnd");
+		--local strawTypeFoliageId = getChild(g_currentMission.terrainRootNode, strawType);
+		if (strawTypeFoliageId == nil or strawTypeFoliageId == 0) then
+			print(('Error: missing foliage layer for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted.'):format(a));
+			break;
+		end;
 
 		local b = 0;
 		while true do
@@ -125,11 +129,3 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 		a = a + 1;
 	end;
 end;
-
---function AddChoppedStraw:tableMap(table, func)
---	local newArray = {};
---	for i,v in ipairs(table) do
---		newArray[i] = func(v);
---	end;
---	return newArray;
---end;
