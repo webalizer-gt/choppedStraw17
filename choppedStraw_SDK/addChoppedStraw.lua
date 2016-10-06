@@ -24,21 +24,21 @@
 	2)	add to map's modDesc.xml:
 
 	<AddChoppedStraw globalFertilization="true">
-		<strawType name="lightStraw">
-			<binding fruitType="wheat" strawOutputFront="false" allowFertilization="true" soilmodN="1" soilmodPK="1" />
-			<binding fruitType="barley" strawOutputFront="false" allowFertilization="true" soilmodN="1" soilmodPK="1" />
+		<strawType name="lightStraw" allowFertilization="true" soilmodN="1" soilmodPK="1" >
+			<binding fruitType="wheat" strawOutputFront="false" />
+			<binding fruitType="barley" strawOutputFront="false" />
 		</strawType>
-		<strawType name="darkStraw">
-			<binding fruitType="rape" strawOutputFront="false" allowFertilization="true" soilmodN="2" soilmodPK="1" />
+		<strawType name="darkStraw" allowFertilization="true" soilmodN="2" soilmodPK="1" >
+			<binding fruitType="rape" strawOutputFront="false" />
 		</strawType>
-		<strawType name="maizeStraw">
-			<binding fruitType="maize" strawOutputFront="true" allowFertilization="true" soilmodN="2" soilmodPK="2" />
+		<strawType name="maizeStraw" allowFertilization="true" soilmodN="2" soilmodPK="2" >
+			<binding fruitType="maize" strawOutputFront="true" />
 		</strawType>
-		<strawType name="soybeanStraw">
-			<binding fruitType="soybean" strawOutputFront="true" allowFertilization="false" />
+		<strawType name="soybeanStraw" allowFertilization="false" >
+			<binding fruitType="soybean" strawOutputFront="true" />
 		</strawType>
-		<strawType name="sunflowerStraw">
-			<binding fruitType="sunflower" strawOutputFront="true" allowFertilization="false" />
+		<strawType name="sunflowerStraw" allowFertilization="false">
+			<binding fruitType="sunflower" strawOutputFront="true" />
 		</strawType>
 	</AddChoppedStraw>
 
@@ -79,8 +79,8 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 	if hasXMLProperty(xmlFile, key..'#globalFertilization') then
 		ChoppedStraw.globalFertilization = Utils.getNoNil(getXMLBool(xmlFile, key..'#globalFertilization'),true);
 	end;
-	-- Create array for binding fruitTypes to strawTypes
-	ChoppedStraw.strawBindings = {};
+
+	-- iterate over strawType tags
 	local a = 0;
 	while true do
 		local strawTypeKey = key .. ('.strawType(%d)'):format(a);
@@ -88,19 +88,34 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 			break;
 		end;
 
-		local strawType = getXMLString(xmlFile, strawTypeKey..'#name');
-		if strawType == nil then
+		local strawTypeName = getXMLString(xmlFile, strawTypeKey..'#name');
+		if strawTypeName == nil then
 			print(('Error: missing "name" attribute for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted.'):format(a));
 			break;
 		end;
+
 		-- One of these two, but which one????
-		local strawTypeFoliageId = g_currentMission:loadFoliageLayer(strawType, -5, -1, true, "alphaBlendStartEnd");
-		--local strawTypeFoliageId = getChild(g_currentMission.terrainRootNode, strawType);
+		local strawTypeFoliageId = g_currentMission:loadFoliageLayer(strawTypeName, -5, -1, true, "alphaBlendStartEnd");
+		--local strawTypeFoliageId = getChild(g_currentMission.terrainRootNode, strawTypeName);
+
+		local strawTypeAllowFertilization = Utils.getNoNil(getXMLBool(xmlFile, strawTypeKey..'#allowFertilization'),false);
+		local strawTypeSoilmodN = Utils.getNoNil(getXMLInt(xmlFile, strawTypeKey..'#soilmodN'),0);
+		local strawTypeSoilmodPK = Utils.getNoNil(getXMLInt(xmlFile, strawTypeKey..'#soilmodPK'),0);
+
 		if (strawTypeFoliageId == nil or strawTypeFoliageId == 0) then
 			print(('Error: missing foliage layer for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted.'):format(a));
 			break;
 		end;
+		-- store values in global ChoppedStraw
+		ChoppedStraw.strawTypes[a] = {
+			name = strawTypeName,
+			foliageId = strawTypeFoliageId,
+			allowFertilization = strawTypeAllowFertilization,
+			soilmodN = strawTypeSoilmodN,
+			soilmodPK = strawTypeSoilmodPK
+		};
 
+		-- iterate over bindings
 		local b = 0;
 		while true do
 			local binding = strawTypeKey .. ('.binding(%d)'):format(b);
@@ -109,20 +124,14 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 			end;
 			local bindingFruitType = getXMLString(xmlFile, binding..'#fruitType');
 			local bindingStrawOutputFront = Utils.getNoNil(getXMLBool(xmlFile, binding..'#strawOutputFront'),false);
-			local bindingAllowFertilization = Utils.getNoNil(getXMLBool(xmlFile, binding..'#allowFertilization'),false);
-			local bindingSoilmodN = Utils.getNoNil(getXMLInt(xmlFile, binding..'#soilmodN'),0);
-			local bindingSoilmodPK = Utils.getNoNil(getXMLInt(xmlFile, binding..'#soilmodPK'),0);
 
 			if not hasXMLProperty(xmlFile, bindingFruitType) then
 				break;
 			end;
+			-- store values in global ChoppedStraw, strawTypeId is a reference to strawTypes table >>ChoppedStraw.strawTypes[a]
 			ChoppedStraw.strawBindings[bindingFruitType] = {
-				strawType = strawType,
-				strawTypeFoliageId = strawTypeFoliageId,
+				strawTypeId = a,
 				strawOutputFront = bindingStrawOutputFront,
-				allowFertilization = bindingAllowFertilization,
-				soilmodN = bindingSoilmodN,
-				soilmodPK = bindingSoilmodPK
 			};
 			b = b + 1;
 		end;

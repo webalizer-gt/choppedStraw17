@@ -57,24 +57,26 @@ function ChoppedStraw_Register:loadMap(name)
 end;
 
 function ChoppedStraw_Register:update(dt)
-  if not ChoppedStraw_Register.initialized then
-    ChoppedStraw_Register.initialized = true -- Only initialize ONCE.
+	if not ChoppedStraw_Register.initialized then
+		ChoppedStraw_Register.initialized = true -- Only initialize ONCE.
 
-    -- If SoilMod did not "call us", then do it "the old way"...
-    --if not ChoppedStraw_Register.soilModPresent then
-		ChoppedStraw_Register.old_UpdateDestroyCommonArea = Utils.updateDestroyCommonArea;
-		Utils.updateDestroyCommonArea = ChoppedStraw_Register.updateDestroyCommonArea;
+		-- If SoilMod-v2.x does not exist then do it "the old way"...
+		--if modSoilMod2 == nil then
+			ChoppedStraw_Register.old_UpdateDestroyCommonArea = Utils.updateDestroyCommonArea;
+			Utils.updateDestroyCommonArea = ChoppedStraw_Register.updateDestroyCommonArea;
 
-    --end;
-  end;
+		--end;
+	end;
 end;
 
 function ChoppedStraw_Register.updateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField)
 	ChoppedStraw_Register.old_UpdateDestroyCommonArea(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, limitGrassDestructionToField);
 
-	-- Achtung. ChoppedStraw-Table passt hierfür nicht!!!!
-	for _,entry in pairs(ChoppedStraw.strawBindings) do
-		Utils.updateDensity(entry.id, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
+	-- iterate over strawTypes
+	for _,entry in pairs(ChoppedStraw.strawTypes) do
+
+		-- This is deprecated since FS15?
+		Utils.updateDensity(entry.foliageId, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, 0, 0);
 
 		-- Düngen hier irgendwie einbauen!
 		if (ChoppedStraw.globalFertilization and entry.allowFertilization) then

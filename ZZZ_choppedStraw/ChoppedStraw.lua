@@ -68,6 +68,7 @@ function ChoppedStraw:updateTick(dt)
     local choppedStrawBinding = ChoppedStraw.strawBindings[fruitDesc.name];
 
     if choppedStrawBinding ~= nil then
+      local strawTypeFoliageId = ChoppedStraw.strawTypes[choppedStrawBinding.strawTypeId].foliageId
   		if self.isTurnedOn
   		and self.movingDirection > 0
   		and fruitDesc ~= nil
@@ -80,18 +81,18 @@ function ChoppedStraw:updateTick(dt)
   							local x, _, z = getWorldTranslation(workArea.start)
   							local x1, _, z1 = getWorldTranslation(workArea.width)
   							local x2, _, z2 = getWorldTranslation(workArea.height)
-  							Utils.updateStrawHaulmArea(choppedStrawBinding.strawTypeFoliageId, x, z, x1, z1, x2, z2)
+  							Utils.updateStrawHaulmArea(strawTypeFoliageId, x, z, x1, z1, x2, z2)
   						end;
   					end;
   				end;
   			end;
   		elseif self.chopperPSenabled then
-  			if choppedStrawBinding.strawTypeFoliageId ~= nil then
+  			if strawTypeFoliageId ~= nil then
   				for i = 1, table.getn(self.cStrawAreas) do
   					local x, _, z = getWorldTranslation(self.cStrawAreas[i].start)
   					local x1, _, z1 = getWorldTranslation(self.cStrawAreas[i].width)
   					local x2, _, z2 = getWorldTranslation(self.cStrawAreas[i].height)
-  					Utils.updateStrawHaulmArea(choppedStrawBinding.strawTypeFoliageId, x, z, x1, z1, x2, z2)
+  					Utils.updateStrawHaulmArea(strawTypeFoliageId, x, z, x1, z1, x2, z2)
   				end;
   			end;
   		end;
