@@ -80,7 +80,7 @@ function ChoppedStraw_Register.updateDestroyCommonArea(startWorldX, startWorldZ,
 
 		-- Düngen hier irgendwie einbauen!
 		if (ChoppedStraw.globalFertilization and entry.allowFertilization) then
-
+			Utils.updateSprayArea(float startWorldX, float startWorldZ, float widthWorldX, float widthWorldZ, float heightWorldX, float heightWorldZ)
 		end;
 
 	end;
@@ -92,7 +92,7 @@ Utils.updateStrawHaulmArea = function(choppedStrawFoliageId, x, z, x1, z1, x2, z
 		2^g_currentMission.cultivatorChannel
 		+ 2^g_currentMission.sowingChannel
 		+ 2^g_currentMission.ploughChannel;
-	setDensityMaskParams(preparingOutputId, "greater", 0,0,includeMask,0)
+	setDensityMaskParams(choppedStrawFoliageId, "greater", 0,0,includeMask,0)
 	setDensityMaskedParallelogram(
 		preparingOutputId,
 		dx, dz, dwidthX, dwidthZ, dheightX, dheightZ,
