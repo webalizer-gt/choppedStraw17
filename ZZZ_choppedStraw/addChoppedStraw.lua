@@ -5,67 +5,29 @@
 -- @version: 17.01b
 -- @date: 16 Sep 2016
 -- @history: 17.01b (16 Sep 2016): initial implementation
---
---
--- @usage:
---[[
-	0)	reference this .lua file in the map's <extraSourceFiles>
-
-	1)	add to map's .lua file, :new() function, at the beginning:
-
-		-- AddChoppedStraw # START #
-		local AddChoppedStrawPath =  Utils.getFilename('AddChoppedStraw.lua', baseDirectory);
-		if fileExists(AddChoppedStrawPath) then
-			source(AddChoppedStrawPath);
-			AddChoppedStraw:run(baseDirectory);
-		end;
-		-- AddChoppedStraw #  END  #
-
-	2)	add to map's modDesc.xml:
-
-	<AddChoppedStraw globalFertilization="true">
-		<strawType name="lightStraw" allowFertilization="true" soilmodN="1" soilmodPK="1" >
-			<binding fruitType="wheat" strawOutputFront="false" />
-			<binding fruitType="barley" strawOutputFront="false" />
-		</strawType>
-		<strawType name="darkStraw" allowFertilization="true" soilmodN="2" soilmodPK="1" >
-			<binding fruitType="rape" strawOutputFront="false" />
-		</strawType>
-		<strawType name="maizeStraw" allowFertilization="true" soilmodN="2" soilmodPK="2" >
-			<binding fruitType="maize" strawOutputFront="true" />
-		</strawType>
-		<strawType name="soybeanStraw" allowFertilization="false" >
-			<binding fruitType="soybean" strawOutputFront="true" />
-		</strawType>
-		<strawType name="sunflowerStraw" allowFertilization="false">
-			<binding fruitType="sunflower" strawOutputFront="true" />
-		</strawType>
-	</AddChoppedStraw>
-
-		Adjust the "globalFertilization" tag to your preference.
---]]
-
--- ##################################################
 
 
 AddChoppedStraw = {};
 AddChoppedStraw.version = '17.01b';
 AddChoppedStraw.author = 'webalizer';
+AddChoppedStraw.modDir = g_currentModDirectory;
 
-function AddChoppedStraw:run(baseDirectory)
-
+function AddChoppedStraw:loadMap(name)
 	if self.initialized then return end;
-
-	local xmlFilePath =  Utils.getFilename('modDesc.xml', baseDirectory);
+	print(('loadMap(name) name = %s'):format(name));
+	local modDir = AddChoppedStraw.modDir;
+	local mapDir = modDir..'/'..name;
+	local xmlFilePath =  Utils.getFilename('addChoppedStraw.xml', mapDir);
+	print(('xmlFilePath = %s'):format(xmlFilePath));
 	if fileExists(xmlFilePath) then
-		local xmlFile = loadXMLFile('modDescXML', xmlFilePath);
-		local key = 'modDesc.AddChoppedStraw';
+		local xmlFile = loadXMLFile('choppedStrawXML', xmlFilePath);
+		local key = 'AddChoppedStraw';
 
 		if hasXMLProperty(xmlFile, key) then
-				print(('AddChoppedStraw v%s by %s loaded'):format(AddChoppedStraw.version, AddChoppedStraw.author));
+				print(('AddChoppedStraw v%s by %s loading...'):format(AddChoppedStraw.version, AddChoppedStraw.author));
 				self:registerStrawTypes(xmlFile, key);
 			else
-				print('Error: missing AddChoppedStraw in modDesc.xml!');
+				print('Error: missing AddChoppedStraw in addChoppedStraw.xml!');
 		end; -- END hasXMLProperty(xmlFile, key)
 		delete(xmlFile);
 	end; -- END fileExists(xmlFilePath)
@@ -138,3 +100,5 @@ function AddChoppedStraw:registerStrawTypes(xmlFile, key)
 		a = a + 1;
 	end;
 end;
+
+addModEventListener(AddChoppedStraw)
