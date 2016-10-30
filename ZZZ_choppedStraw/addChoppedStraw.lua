@@ -10,13 +10,13 @@
 AddChoppedStraw = {};
 AddChoppedStraw.version = '17.01b';
 AddChoppedStraw.author = 'webalizer';
-AddChoppedStraw.modDir = g_currentModDirectory;
 
 function AddChoppedStraw:loadMap(name)
 	if self.initialized then return end;
-	print(('loadMap(name) name = %s'):format(name));
-	local modDir = AddChoppedStraw.modDir;
-	local mapDir = modDir..'/'..name;
+
+	local mpath =  name:match("(.+)%/.+")
+	print(('loadMap name = %s'):format(mpath));
+
 	local xmlFilePath =  Utils.getFilename('addChoppedStraw.xml', mapDir);
 	print(('xmlFilePath = %s'):format(xmlFilePath));
 	if fileExists(xmlFilePath) then

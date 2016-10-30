@@ -7,15 +7,17 @@ local choppedStrawSpec = SpecializationUtil.getSpecialization('ChoppedStraw');
 
 ChoppedStraw_Register = {};
 local modItem = ModsUtil.findModItemByModName(g_currentModName);
-ChoppedStraw_Register.version = (modItem and modItem.version) and modItem.version or "?.?.?";
+ChoppedStraw.version = '*** ChoppedStraw v'..((modItem and modItem.version) and modItem.version or "?.?.?");
 
 --
 ChoppedStraw_Register.initialized = false
 
 function ChoppedStraw_Register:loadMap(name)
-	if self.specAdded then return; end;
+	g_currentMission.mapPath =  name:match("(.+)%/.+")..'/choppedStraw_SDK/';
+	--print(('AddChoppesStraw.lua: loadMap name = %s'):format(g_currentMission.mapPath));
 
-	print('*** ChoppedStraw v'..ChoppedStraw_Register.version..' specialization loading ***');
+	if self.specAdded then return; end;
+	print(('%s register specialization ***'):format(ChoppedStraw.version));
 
 	local addedTo = {};
 
@@ -49,9 +51,10 @@ function ChoppedStraw_Register:loadMap(name)
 		end;
 	end;
 
-	--if #addedTo > 0 then
-	--	print('*** ChoppedStraw added to:\n\t\t' .. table.concat(addedTo, '\n\t\t'));
-	--end;
+	if #addedTo > 0 then
+		print(('%s specialization added to %s vehicle types ***'):format(ChoppedStraw.version, #addedTo));
+		--print('*** ChoppedStraw added to:\n\t\t' .. table.concat(addedTo, '\n\t\t'));
+	end;
 
 	self.specAdded = true;
 end;
@@ -80,26 +83,22 @@ function ChoppedStraw_Register.updateDestroyCommonArea(startWorldX, startWorldZ,
 
 		-- Düngen hier irgendwie einbauen!
 		if (ChoppedStraw.globalFertilization and entry.allowFertilization) then
-			Utils.updateSprayArea(float startWorldX, float startWorldZ, float widthWorldX, float widthWorldZ, float heightWorldX, float heightWorldZ)
+			--Utils.updateSprayArea(float startWorldX, float startWorldZ, float widthWorldX, float widthWorldZ, float heightWorldX, float heightWorldZ)
 		end;
 
 	end;
 end;
 
-Utils.updateStrawHaulmArea = function(choppedStrawFoliageId, x, z, x1, z1, x2, z2)
-	local dx, dz, dwidthX, dwidthZ, dheightX, dheightZ = Utils.getXZWidthAndHeight(nil, x, z, x1, z1, x2, z2)
-	local includeMask =
-		2^g_currentMission.cultivatorChannel
-		+ 2^g_currentMission.sowingChannel
-		+ 2^g_currentMission.ploughChannel;
+Utils.updateStrawArea = function(choppedStrawFoliageId, x, z, x1, z1, x2, z2)
+
+	local dx, dz, dwidthX, dwidthZ, dheightX, dheightZ = Utils.getXZWidthAndHeight(nil, x, z, x1, z1, x2, z2);
+	
+	local includeMask = 2^g_currentMission.cultivatorChannel + 2^g_currentMission.sowingChannel + 2^g_currentMission.ploughChannel;
+	
 	setDensityMaskParams(choppedStrawFoliageId, "greater", 0,0,includeMask,0)
-	setDensityMaskedParallelogram(
-		preparingOutputId,
-		dx, dz, dwidthX, dwidthZ, dheightX, dheightZ,
-		0, 1,
-		g_currentMission.terrainDetailId, g_currentMission.terrainDetailTypeFirstChannel, g_currentMission.terrainDetailTypeNumChannels,
-		1
-	)
+	
+	setDensityMaskedParallelogram(choppedStrawFoliageId, dx, dz, dwidthX, dwidthZ, dheightX, dheightZ,	0, 1,	g_currentMission.terrainDetailId, g_currentMission.terrainDetailTypeFirstChannel, g_currentMission.terrainDetailTypeNumChannels,	1)
+	
 	setDensityMaskParams(choppedStrawFoliageId, "greater", -1)
 end;
 
