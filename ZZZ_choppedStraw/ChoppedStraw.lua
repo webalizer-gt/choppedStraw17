@@ -3,21 +3,19 @@
 -- by webalizer, www.planet-ls.de
 
 ChoppedStraw = {};
--- "Register" this object in global environment, so other mods can "see" it.
-getfenv(0)["ChoppedStraw"] = ChoppedStraw
 
 function ChoppedStraw.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(ChoppedStraw, specializations);
 	--return true;
 end;
 
-local debugmode = true;
+local debugmode = 1;
 
-local function messagePrint(mode,message)
-	if (debugmode and mode == 1) then
-		print(('%s DEBUG | %s'):format(ChoppedStraw.version, message));
-	elseif mode == 2 then
-		print(('%s | %s'):format(ChoppedStraw.version, message));
+function logInfo(mode,message)
+	if (mode >= debugmode and mode < 5) then
+		print(('%s DEBUG | %s'):format(g_currentMission.cs_version, message));
+	elseif mode == 5 then
+		print(('%s | %s'):format(g_currentMission.cs_version, message));
 	end;
 end;
 
@@ -26,7 +24,7 @@ local function hasFoliageLayer(foliageId)
 end;
 
 local function getFoliageLayer(name)
-	 --messagePrint(1,('g_currentMission.terrainRootNode = %s, foliageLayerName = %s'):format(g_currentMission.terrainRootNode, name));
+	logInfo(0,('g_currentMission.terrainRootNode = %s, foliageLayerName = %s'):format(g_currentMission.terrainRootNode, name));
     local foliageId = getChild(g_currentMission.terrainRootNode, name);
     if hasFoliageLayer(foliageId) then
         foliageId = g_currentMission:loadFoliageLayer(name, -5, -1, true, "alphaBlendStartEnd");
@@ -44,24 +42,24 @@ function ChoppedStraw:load(savegame)
 	self.registerStrawTypes = ChoppedStraw.registerStrawTypes;
 	
 	if self.initialized then return end;
-	local mapPath = g_currentMission.mapPath;
-	messagePrint(1,('loadMap name = %s'):format(mapPath));
+	local mapPath = g_currentMission.cs_mapPath;
+	logInfo(1,('loadMap name = %s'):format(mapPath));
 
 	local xmlFilePath =  Utils.getFilename('addChoppedStraw.xml', mapPath);
-	messagePrint(1,('xmlFilePath = %s'):format(xmlFilePath));
+	logInfo(1,('xmlFilePath = %s'):format(xmlFilePath));
 	if fileExists(xmlFilePath) then
 		local csFile = loadXMLFile('choppedStrawXML', xmlFilePath);
 		local key = 'AddChoppedStraw';
 
 		if hasXMLProperty(csFile, key) then
-				messagePrint(2,'loading straw types');
+				logInfo(5,'loading straw types');
 				self:registerStrawTypes(csFile, key);
 			else
-				messagePrint(2,('Error: missing AddChoppedStraw in %s!'):format(xmlFilePath));
+				logInfo(5,('Error: missing AddChoppedStraw in %s!'):format(xmlFilePath));
 		end; -- END hasXMLProperty(csFile, key)
 		delete(csFile);
 	else
-		messagePrint(2,('config file %s not found!'):format(xmlFilePath));
+		logInfo(5,('config file %s not found!'):format(xmlFilePath));
 	end; -- END fileExists(xmlFilePath)
 
 	self.initialized = true;
@@ -69,18 +67,18 @@ function ChoppedStraw:load(savegame)
 	
 	if  self.strawToggleTime ~= nil then
 		 self.strawToggleTime = math.max(4000,  self.strawToggleTime);
-		messagePrint(1,('self.strawToggleTime: %s'):format(self.strawToggleTime));
+		logInfo(1,('self.strawToggleTime: %s'):format(self.strawToggleTime));
 	end;
 
 	-- Area creation
 	self.strawZOffset = -1.5;
 	self.strawNodeId = Utils.indexToObject(self.components, getXMLString(self.xmlFile, "vehicle.workAreas.workArea#startIndex"));
-	messagePrint(1,('strawNodeId: %s'):format(self.strawNodeId));
+	logInfo(1,('strawNodeId: %s'):format(self.strawNodeId));
 
 	if self.strawNodeId ~= nil then
 		self.cStrawAreas = {}
 		self.cStrawAreas = self:createCStrawArea();
-		messagePrint(1,'CStrawArea created');
+		logInfo(1,'CStrawArea created');
 	else
 		--Disable chopped-straw for this vehicle.
 		self.strawNodeId = nil;
@@ -111,25 +109,22 @@ end;
 function ChoppedStraw:updateTick(dt)
 	if not self.isStrawEnabled	and self.strawNodeId ~= nil and self.lastValidInputFruitType ~= FruitUtil.FRUITTYPE_UNKNOWN	then
 		local fruitDesc = FruitUtil.fruitIndexToDesc[self.lastValidInputFruitType];
-		messagePrint(1,('fruitDesc.name: %s'):format(fruitDesc.name));
-		local choppedStrawBinding = ChoppedStraw.strawBindings[fruitDesc.name];
-		messagePrint(1,('choppedStrawBinding: %s'):format(choppedStrawBinding));
+		logInfo(0,('fruitDesc.name: %s'):format(fruitDesc.name));
+		local choppedStrawBinding = g_currentMission.cs_strawBindings[fruitDesc.name];
+		logInfo(0,('choppedStrawBinding: %s'):format(choppedStrawBinding));
 
 		if choppedStrawBinding ~= nil then
-		  local strawTypeFoliageId = ChoppedStraw.strawTypes[choppedStrawBinding.strawTypeId].foliageId
-			if self.isTurnedOn
-			and self.movingDirection > 0
-			and fruitDesc ~= nil
-			and choppedStrawBinding.strawOutputFront
-			then
+		  local strawTypeFoliageId = g_currentMission.cs_strawTypes[choppedStrawBinding.strawTypeId].foliageId
+			if  self.combineIsFilling and self.movingDirection > 0 and fruitDesc ~= nil and choppedStrawBinding.strawOutputFront then
 				for object,implement in pairs(self.attachedCutters) do --parse all cutters
 					if object ~= nil then
-						if object.threshingParticleSystems ~= nil and object.threshingParticleSystems.isEmitting then
+						if object.reelStarted then
+						--if object.threshingParticleSystems ~= nil and object.threshingParticleSystems.isEmitting then
 							for _,workArea in pairs(object.workAreas) do
 								local x, _, z = getWorldTranslation(workArea.start);
 								local x1, _, z1 = getWorldTranslation(workArea.width);
 								local x2, _, z2 = getWorldTranslation(workArea.height);
-								messagePrint(1,('Arguments to Util.updateStrawHaulmArea: strawTypeFoliageId: %s, x: %s, z: %s, x1: %s, z1: %s, x2: %s, z2: %s'):format(strawTypeFoliageId, x, z, x1, z1, x2, z2));
+								logInfo(0,('Arguments to Util.updateStrawHaulmArea: strawTypeFoliageId: %s, x: %s, z: %s, x1: %s, z1: %s, x2: %s, z2: %s'):format(strawTypeFoliageId, x, z, x1, z1, x2, z2));
 								Utils.updateStrawArea(strawTypeFoliageId, x, z, x1, z1, x2, z2);
 							end;
 						end;
@@ -141,7 +136,7 @@ function ChoppedStraw:updateTick(dt)
 						local x, _, z = getWorldTranslation(self.cStrawAreas[i].start);
 						local x1, _, z1 = getWorldTranslation(self.cStrawAreas[i].width);
 						local x2, _, z2 = getWorldTranslation(self.cStrawAreas[i].height);
-						messagePrint(1,('Arguments to Util.updateStrawHaulmArea: strawTypeFoliageId: %s, x: %s, z: %s, x1: %s, z1: %s, x2: %s, z2: %s'):format(strawTypeFoliageId, x, z, x1, z1, x2, z2));	Utils.updateStrawArea(strawTypeFoliageId, x, z, x1, z1, x2, z2);
+						logInfo(0,('Arguments to Util.updateStrawHaulmArea: strawTypeFoliageId: %s, x: %s, z: %s, x1: %s, z1: %s, x2: %s, z2: %s'):format(strawTypeFoliageId, x, z, x1, z1, x2, z2));	Utils.updateStrawArea(strawTypeFoliageId, x, z, x1, z1, x2, z2);
 					end;
 				end;
 			end;
@@ -155,7 +150,7 @@ end;
 function ChoppedStraw:onAttachImplement(implement)
 	if self.strawNodeId ~= nil then
 		self.caxMin, self.caxMax, self.cay, self.caz, self.caWW, self.caCenter = self:getAreas();
-		messagePrint(1,('self.caxMin %s, self.caxMax %s, self.cay %s, self.caz %s, self.caWW %s, self.caCenter %s'):format(self.caxMin, self.caxMax, self.cay, self.caz, self.caWW, self.caCenter));
+		logInfo(1,('self.caxMin %s, self.caxMax %s, self.cay %s, self.caz %s, self.caWW %s, self.caCenter %s'):format(self.caxMin, self.caxMax, self.cay, self.caz, self.caWW, self.caCenter));
 		self:setCStrawArea();
 	end;
 end;
@@ -197,19 +192,19 @@ function ChoppedStraw:wwMinMaxAreas(self, workArea)
 		local lx3,ly3,lz3 = worldToLocal(self.rootNode,x3,y3,z3)
 		minA = math.min(minA, lx1, lx2, lx3)
 		maxA = math.max(maxA, lx1, lx2, lx3)
-		messagePrint(1,('wwMinMaxAreas: minA: %s, maxA: %s, ly1: %s; lz1: %s'):format(minA, maxA, ly1, lz1));
+		logInfo(1,('wwMinMaxAreas: minA: %s, maxA: %s, ly1: %s; lz1: %s'):format(minA, maxA, ly1, lz1));
 		return minA, maxA, ly1, lz1;
 	end;
 end;
 
 function ChoppedStraw:createCStrawArea()
 	local combineAreas =  self:getTypedWorkAreas(WorkArea.AREATYPE_COMBINE);
-	messagePrint(1,('combineAreas: %s'):format(combineAreas));
+	logInfo(1,('combineAreas: %s'):format(combineAreas));
 	for _,strawArea in pairs(combineAreas) do
 		local x2,y2,z2 = getWorldTranslation(strawArea.width);
 		local lx2,ly2,lz2 = worldToLocal(self.rootNode,x2,y2,z2);
 		self.strawXOffset = lx2;
-		messagePrint(1,('self.strawXOffset: %s'):format(self.strawXOffset));
+		logInfo(1,('self.strawXOffset: %s'):format(self.strawXOffset));
 	end;
 
 	local cStrawAreas = {};
@@ -239,12 +234,12 @@ function ChoppedStraw:registerStrawTypes(csFile, key)
 	-- Read straw informations into ChoppedStraw globalFertilization
 	-- Use fertilization in general? (default=true)
 	if hasXMLProperty(csFile, key..'#globalFertilization') then
-		ChoppedStraw.globalFertilization = Utils.getNoNil(getXMLBool(csFile, key..'#globalFertilization'),true);
+		g_currentMission.cs_globalFertilization = Utils.getNoNil(getXMLBool(csFile, key..'#globalFertilization'),true);
 	end;
 
 	-- iterate over strawType tags
-	ChoppedStraw.strawTypes = {};
-	ChoppedStraw.strawBindings = {};
+	g_currentMission.cs_strawTypes = {};
+	g_currentMission.cs_strawBindings = {};
 	local a = 0;
 	while true do
 		local strawTypeKey = key .. ('.strawType(%d)'):format(a);
@@ -254,7 +249,7 @@ function ChoppedStraw:registerStrawTypes(csFile, key)
 
 		local strawTypeName = getXMLString(csFile, strawTypeKey..'#name');
 		if strawTypeName == nil then
-			messagePrint(2,('Error: missing "name" attribute for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted!'):format(a));
+			logInfo(5,('Error: missing "name" attribute for strawType #%d in "AddChoppedStraw". Adding strawTypes aborted!'):format(a));
 			break;
 		end;
 
@@ -266,13 +261,13 @@ function ChoppedStraw:registerStrawTypes(csFile, key)
 		local strawTypeSoilmodPK = Utils.getNoNil(getXMLInt(csFile, strawTypeKey..'#soilmodPK'),0);
 
 		if (strawTypeFoliageId == nil or strawTypeFoliageId == 0) then
-			messagePrint(2,('Error: missing foliage layer for strawType #%d %s. Adding strawTypes aborted!'):format(a, strawTypeName));
+			logInfo(5,('Error: missing foliage layer for strawType #%d %s. Adding strawTypes aborted!'):format(a, strawTypeName));
 			break;
 		end;
 		-- store values in global ChoppedStraw
-		messagePrint(1,('ChoppedStraw.strawType[%s]: name: %s | foliageId: %s | allowFertilization: %s | soilModN: %s | soilModPK: %s'):format(a, strawTypeName, strawTypeFoliageId, strawTypeAllowFertilization, strawTypeSoilmodN, strawTypeSoilmodPK));
+		logInfo(1,('g_currentMission.cs_strawType[%s]: name: %s | foliageId: %s | allowFertilization: %s | soilModN: %s | soilModPK: %s'):format(a, strawTypeName, strawTypeFoliageId, strawTypeAllowFertilization, strawTypeSoilmodN, strawTypeSoilmodPK));
 
-		ChoppedStraw.strawTypes[a] = {
+		g_currentMission.cs_strawTypes[a] = {
 			name = strawTypeName,
 			foliageId = strawTypeFoliageId,
 			allowFertilization = strawTypeAllowFertilization,
@@ -293,10 +288,10 @@ function ChoppedStraw:registerStrawTypes(csFile, key)
 			--if not hasXMLProperty(csFile, bindingFruitType) then
 			--	break;
 			--end;
-			-- store values in global ChoppedStraw, strawTypeId is a reference to strawTypes table >>ChoppedStraw.strawTypes[a]
-			messagePrint(1,('     ChoppedStraw.strawBindings[%s]: strawTypeId: %s | strawOutputFront: %s'):format(bindingFruitType, a, bindingStrawOutputFront));
+			-- store values in global ChoppedStraw, strawTypeId is a reference to strawTypes table >>g_currentMission.cs_strawTypes[a]
+			logInfo(1,('     g_currentMission.cs_strawBindings[%s]: strawTypeId: %s | strawOutputFront: %s'):format(bindingFruitType, a, bindingStrawOutputFront));
 
-			ChoppedStraw.strawBindings[bindingFruitType] = {
+			g_currentMission.cs_strawBindings[bindingFruitType] = {
 				strawTypeId = a,
 				strawOutputFront = bindingStrawOutputFront,
 			};
