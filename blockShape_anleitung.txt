@@ -1,0 +1,19 @@
+du kannst pro foliage layer n eigenes Object festlegen das angezeigt werden soll
+in der i3d suchst du nach den foliagelayern
+dort fidnest du dann zB blockShapeId="3"
+das die referenz auf das object darstellt.
+
+wenn du nun in dem fall nach
+shapeId="3"
+suchst wirst du sowas wie
+<IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="3">
+
+finden. darunter die definition des meshes.
+
+-> somit kannste das dann auch nach belieben ändern. Bissl XMl-Kenntnisse und du kannst dir das selber einbaun .
+Zb in maya ein mesh baun. exportiern und das indexedTriangleSet in die mapi3d kopiern. dann die shapeId="" ziemlich hoch setzen damit sie uach wirklich einzigartig is. zB 12387263. und bei den foliage layern die i3d bei blockShapeId eintragen.
+
+fertig.
+WEnn du willst das sich die pflanzen immer zu dir ausrichten kannste das mit nem shader machen. Ähnlich wie der Shader für die lichter. der richtet die flachen planes auch immer zum Blickwinkel aus.
+
+Gruß Face
