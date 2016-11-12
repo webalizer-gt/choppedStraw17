@@ -1,0 +1,175 @@
+﻿-- Chopped Straw
+-- Spec for chopped straw left on field
+-- Instructions for Farming Simulator 17
+
+#######################
+Instructions part 1 of 6:
+
+To prepare your MAP.I3D for use, a few additional elements need to be added to it:
+  - 7 File assets
+  - 4 Material assets
+  - 1 FoliageMultiLayer containing four FoliageSubLayers
+  - 1 Shape asset
+These blocks are IN THIS file in the next instruction parts.
+
+As always; MAKE A BACKUP ahead of time, in case you later made a mistake or some problems/errors occur which you can't quite figure out. This way you can always revert to your previous backup, and try follow the instructions again.
+Map has to be extracted!
+
+A.  First you need to locate and write down a number from your own MAP.I3D file (use the find function of your Textbrowser!):
+
+    Find the 'fileId' of 'shaders/windrowFoliageShader.xml'. Note the value here->
+ 
+ 
+B.  Using the number you found in step A, then in THIS FILE (in which you are reading at the moment), you have to search/replace some placeholders.
+    Note: When you search/replace, remember to include the two+two exclamation marks surrounding the placeholder-text.
+    - Example: search for  !!PLACEHOLDER!!  then replace with  1234 (use the find/replace function of your Textbrowser!)
+
+    Search for     !!WINDROWSHADERFILEID!!     and replace with the number you found in A-1.
+
+
+#######################
+Instructions part 2 of 6:
+
+Add the following seven <File> elements to your own MAP.I3D's <Files> section.
+
+	<!-- choppedStraw files -->
+	<File fileId="99993" filename="choppedStraw_SDK/straw_haulm_density.png" relativePath="true"/>
+	<File fileId="99994" filename="choppedStraw_SDK/foliage_lightStraw_diffuse.png" relativePath="true"/>
+	<File fileId="99995" filename="choppedStraw_SDK/foliage_darkStraw_diffuse.png" relativePath="true"/>
+	<File fileId="99996" filename="choppedStraw_SDK/foliage_maizeStraw_diffuse.png" relativePath="true"/>
+	<File fileId="99997" filename="choppedStraw_SDK/foliage_sunflowerStraw_diffuse.png" relativePath="true"/>
+	<File fileId="99984" filename="choppedStraw_SDK/foliage_lightStraw_distance.png" relativePath="true"/>
+	<File fileId="99985" filename="choppedStraw_SDK/foliage_darkStraw_distance.png" relativePath="true"/>
+
+
+#######################
+Instructions part 3 of 6:
+
+Add the following four <Material> elements to your own MAP.I3D's <Materials> section.
+
+    <!-- choppedStraw materials -->
+	<Material name="lightStrawMaterial" materialId="99001" ambientColor="1 1 1" customShaderId="!!WINDROWSHADERFILEID!!">
+		<Texture fileId="99994"/>
+		<CustomParameter name="alphaBlendStartEnd" value="70 75 0 0"/>
+		<CustomParameter name="cellSizeTerrainSizeScaleXZScaleY" value="16 1024 2 255"/>
+	</Material>
+	<Material name="darkStrawMaterial" materialId="99002" ambientColor="1 1 1" customShaderId="!!WINDROWSHADERFILEID!!">
+		<Texture fileId="99995"/>
+		<CustomParameter name="alphaBlendStartEnd" value="70 75 0 0"/>
+		<CustomParameter name="cellSizeTerrainSizeScaleXZScaleY" value="16 1024 2 255"/>
+	</Material>
+	<Material name="maizeStrawMaterial" materialId="99003" ambientColor="1 1 1" customShaderId="!!WINDROWSHADERFILEID!!">
+		<Texture fileId="99996"/>
+		<CustomParameter name="alphaBlendStartEnd" value="70 75 0 0"/>
+		<CustomParameter name="cellSizeTerrainSizeScaleXZScaleY" value="16 1024 2 255"/>
+	</Material>
+	<Material name="sunflowerStrawMaterial" materialId="99004" ambientColor="1 1 1" customShaderId="!!WINDROWSHADERFILEID!!">
+		<Texture fileId="99997"/>
+		<CustomParameter name="alphaBlendStartEnd" value="70 75 0 0"/>
+		<CustomParameter name="cellSizeTerrainSizeScaleXZScaleY" value="16 1024 2 255"/>
+	</Material>
+
+
+#######################
+Instructions part 4 of 6:
+
+Add the following <FoliageMultiLayer> and its <FoliageSubLayer>s to your own MAP.I3D. Insert it after the <InfoLayer ... /> element.
+
+    <!-- choppedStraw foliage layers -->
+	<FoliageMultiLayer densityMapId="99993" numChannels="5" numTypeIndexChannels="0">
+		<FoliageSubLayer name="lightStraw" numDensityMapChannels="1" materialId="99001" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
+		<FoliageSubLayer name="darkStraw" densityMapChannelOffset="1" numDensityMapChannels="1" materialId="99002" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
+		<FoliageSubLayer name="maizeStraw" densityMapChannelOffset="2" numDensityMapChannels="1" materialId="99003" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.3" numBlocksPerUnitMin="1.3" numBlocksPerUnitMax="1.3" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
+		<FoliageSubLayer name="sunflowerStraw" densityMapChannelOffset="3" numDensityMapChannels="1" materialId="99004" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.4" numBlocksPerUnitMin="1.4" numBlocksPerUnitMax="1.4" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
+	</FoliageMultiLayer>
+
+
+#######################
+Instructions part 5 of 6:
+
+Add the following <IndexedTriangleSet> element  to your own MAP.I3D's <Shapes> section.
+
+  <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="33333">
+      <Vertices count="13" normal="true" uv0="true">
+          <v p="-0.568026 0.0268561 0.568026" n="0 1 0" t0="0.00193999 0.400993"/>
+          <v p="0.16839 0.0145988 0.91839" n="0 1 0" t0="0.272951 0.00502457"/>
+          <v p="-0.297375 0.366067 0.297375" n="0 1 0" t0="0.202319 0.453636"/>
+          <v p="-0.867737 0.0145988 -0.117736" n="0 1 0" t0="0.0540347 0.838299"/>
+          <v p="0.354834 0.325265 0.354834" n="0 1 0" t0="0.538932 0.219768"/>
+          <v p="0.641822 0.0145988 0.641822" n="0 1 0" t0="0.595331 0.00509479"/>
+          <v p="0.91839 0.0145988 0.16839" n="0 1 0" t0="0.876116 0.163487"/>
+          <v p="-0.354834 0.325265 -0.354834" n="0 1 0" t0="0.380517 0.822754"/>
+          <v p="-0.591168 0.0145988 -0.591168" n="0 1 0" t0="0.33482 0.996691"/>
+          <v p="-0.117736 0.0145988 -0.867737" n="0 1 0" t0="0.6572 0.996761"/>
+          <v p="0 0.479401 0" n="0 1 0" t0="0.459724 0.521261"/>
+          <v p="0.297375 0.366067 -0.297375" n="0 1 0" t0="0.71713 0.588886"/>
+          <v p="0.568026 0.0268561 -0.568026" n="0 1 0" t0="0.917509 0.641529"/>
+      </Vertices>
+      <Triangles count="16">
+          <t vi="0 1 2"/>
+          <t vi="2 3 0"/>
+          <t vi="2 1 4"/>
+          <t vi="1 5 4"/>
+          <t vi="4 5 6"/>
+          <t vi="7 3 2"/>
+          <t vi="7 8 3"/>
+          <t vi="8 7 9"/>
+          <t vi="4 10 2"/>
+          <t vi="2 10 7"/>
+          <t vi="4 6 11"/>
+          <t vi="11 10 4"/>
+          <t vi="7 10 11"/>
+          <t vi="11 9 7"/>
+          <t vi="11 6 12"/>
+          <t vi="12 9 11"/>
+      </Triangles>
+      <Subsets count="1">
+          <Subset firstVertex="0" numVertices="13" firstIndex="0" numIndices="48"/>
+      </Subsets>
+  </IndexedTriangleSet>
+
+
+#######################
+Instructions part 6 of 6:
+
+Copy the FOLDER 'choppedStraw_SDK' to [mapName/maps].
+
+
+#######################
+Finally you MUST open the map with Giants Editor. Possible errors are shown in the "Scripting" window. As long as there ARE errors, don´t save the map in Giants Editor. First solve the problems in the text editor.
+"Warning: i3d contains non-binary indexed triangle sets" is NOT an error and disappears after first saving!
+If there are no more errors you can save the map in Giants Editor.
+
+Now the basic installation on a map with standard fruits is done. The following settings can be made in the file mapName/maps/choppedStraw_SDK/addChoppedStraw.xml:
+- AddChoppedStraw globalFertilization = [true | False]: this enables or disables the fertilization function.
+- strawType allowFertilization = [true | False]: this enables or disables fertilization for the particular straw type.
+- binding strawOutputFront = [true | False]: this is used to set whether the straw already appears on the cutter (for example corn headers)
+
+If more fruit types are installed on the map, which should be used by choppedStraw, you need additional entries in this file There are two possibilities:
+1. If the fruit "oat" should use the existing "lightStraw", a new binding has to be added:
+  <strawType name="lightStraw" allowFertilization="true">
+    <binding fruitType="wheat" strawOutputFront="false" />
+    <binding fruitType="barley" strawOutputFront="false" />
+	<binding fruitType="soybean" strawOutputFront="false" />
+    <binding fruitType="oat" strawOutputFront="false" />
+  </strawType>
+
+2. If the fruit "oat" should use a new straw type "oatStraw", a complete strawType with binding must be added:
+  <strawType name="oatStraw" allowFertilization="true">
+    <binding fruitType="oat" strawOutputFront="false" />
+  </strawType>
+  when doing it that way, the corresponding FoliageSubLayer "oatStraw" must also be installed, as well as numChannels = "x" in the FoliageMultiLayer has to be altered.
+
+Important for all these entries is that fruitType and strawType always have the exact same spelling in your MAP.i3D and addStrawTypes.xml.
+
+#######################
+Troubleshooting:
+
+If there´s no chopped straw in the game appearing, first check the log.txt. With correct installed choppedStraw there should be four entries:
+
+  *** ChoppedStraw v17.xx | register specialization
+  *** ChoppedStraw v17.xx | specialization added to x vehicle types
+  *** ChoppedStraw v17.xx | loading straw types
+  *** ChoppedStraw v17.xx | loaded x straw types
+  
+ In case of problems there are many Error messages that will lead you to the problem.

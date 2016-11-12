@@ -3,6 +3,7 @@
   <strawType name="lightStraw" allowFertilization="true" >
     <binding fruitType="wheat" strawOutputFront="false" />
     <binding fruitType="barley" strawOutputFront="false" />
+	<binding fruitType="soybean" strawOutputFront="false" />
   </strawType>
   <strawType name="darkStraw" allowFertilization="true" >
     <binding fruitType="rape" strawOutputFront="false" />
@@ -10,10 +11,7 @@
   <strawType name="maizeStraw" allowFertilization="true" >
     <binding fruitType="maize" strawOutputFront="true" />
   </strawType>
-  <strawType name="soybeanStraw" allowFertilization="false" >
-    <binding fruitType="soybean" strawOutputFront="true" />
-  </strawType>
-  <strawType name="sunflowerStraw" allowFertilization="false">
+  <strawType name="sunflowerStraw" allowFertilization="true">
     <binding fruitType="sunflower" strawOutputFront="true" />
   </strawType>
 </AddChoppedStraw>
