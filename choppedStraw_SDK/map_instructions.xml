@@ -87,7 +87,7 @@ Add the following <FoliageMultiLayer> and its <FoliageSubLayer>s to your own MAP
 #######################
 Instructions part 5 of 6:
 
-Add the following <IndexedTriangleSet> element  to your own MAP.I3D's <Shapes> section.
+Add the following <IndexedTriangleSet> element  between  <Shapes externalShapesFile="map01.i3d.shapes"> and  </Shapes> in your own MAP.I3D.
 
   <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="33333">
       <Vertices count="13" normal="true" uv0="true">

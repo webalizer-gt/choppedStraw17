@@ -86,7 +86,7 @@ Füge den folgenden <FoliageMultiLayer>-Eintrag im <Layers>-Bereich deiner MAP.i
 #######################
 Anleitung Teil 5 von 6:
 
-Füge den folgenden <IndexedTriangleSet>-Eintrag im <Shapes>-Bereich deiner MAP.i3d ein
+Füge den folgenden <IndexedTriangleSet>-Eintrag zwischen  <Shapes externalShapesFile="map01.i3d.shapes"> und </Shapes> in deiner MAP.i3d ein
 
   <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="33333">
       <Vertices count="13" normal="true" uv0="true">
