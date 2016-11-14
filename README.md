@@ -9,4 +9,4 @@ If activated in the configuration file, cultivating/ploughing the straw can fert
 Harvesters with FS17 Standard-Specialization "Combine"
 
 
-[Visit www.planet-ls.de](http://planet-ls.de/board/index.php?page=Thread&postID=243930#post243930)
+[Visit www.planet-ls.de](http://planet-ls.de/board/index.php?page=Thread&postID=287035#post287035)
