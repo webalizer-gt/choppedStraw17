@@ -69,8 +69,22 @@ function ChoppedStraw:update(dt)
 end;
 
 function ChoppedStraw:updateTick(dt)
+	--check if vehicle is in active fieldjob
+	local isFieldJobVehicle = false;
+	if g_currentMission.fieldJobManager ~= nil then
+		if g_currentMission.fieldJobManager.currentFieldJob ~= nil then
+			if g_currentMission.fieldJobManager.currentFieldJob.fieldJobVehicles ~= nil then
+				for _,vehicle in pairs(g_currentMission.fieldJobManager.currentFieldJob.fieldJobVehicles) do
+					if vehicle == self then
+						isFieldJobVehicle = true;
+						break;
+					end;
+				end;
+			end;
+		end;
+	end;
     -- only run on server, sync. is done automatically
-    if self.isServer and g_currentMission.cs_strawBindings ~= nil then
+    if self.isServer and g_currentMission.cs_strawBindings ~= nil and not isFieldJobVehicle then
         if not self.isStrawEnabled	and self.strawNodeId ~= nil and self.lastValidInputFruitType ~= FruitUtil.FRUITTYPE_UNKNOWN	then
             local fruitDesc = FruitUtil.fruitIndexToDesc[self.lastValidInputFruitType];
             logInfo(0,('fruitDesc.name: %s'):format(fruitDesc.name));
