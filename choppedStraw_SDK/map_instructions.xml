@@ -18,8 +18,8 @@ Map has to be extracted!
 A.  First you need to locate and write down a number from your own MAP.I3D file (use the find function of your Textbrowser!):
 
     Find the 'fileId' of 'shaders/windrowFoliageShader.xml'. Note the value here->
- 
- 
+
+
 B.  Using the number you found in step A, then in THIS FILE (in which you are reading at the moment), you have to search/replace some placeholders.
     Note: When you search/replace, remember to include the two+two exclamation marks surrounding the placeholder-text.
     - Example: search for  !!PLACEHOLDER!!  then replace with  1234 (use the find/replace function of your Textbrowser!)
@@ -77,10 +77,10 @@ Add the following <FoliageMultiLayer> and its <FoliageSubLayer>s to your own MAP
 
     <!-- choppedStraw foliage layers -->
 	<FoliageMultiLayer densityMapId="99993" numChannels="5" numTypeIndexChannels="0">
-		<FoliageSubLayer name="lightStraw" numDensityMapChannels="1" materialId="99001" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
-		<FoliageSubLayer name="darkStraw" densityMapChannelOffset="1" numDensityMapChannels="1" materialId="99002" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
-		<FoliageSubLayer name="maizeStraw" densityMapChannelOffset="2" numDensityMapChannels="1" materialId="99003" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.3" numBlocksPerUnitMin="1.3" numBlocksPerUnitMax="1.3" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
-		<FoliageSubLayer name="sunflowerStraw" densityMapChannelOffset="3" numDensityMapChannels="1" materialId="99004" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.4" numBlocksPerUnitMin="1.4" numBlocksPerUnitMax="1.4" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
+		<FoliageSubLayer name="lightStraw" numDensityMapChannels="1" materialId="99001" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
+		<FoliageSubLayer name="darkStraw" densityMapChannelOffset="1" numDensityMapChannels="1" materialId="99002" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
+		<FoliageSubLayer name="maizeStraw" densityMapChannelOffset="2" numDensityMapChannels="1" materialId="99003" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.3" numBlocksPerUnitMin="1.3" numBlocksPerUnitMax="1.3" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
+		<FoliageSubLayer name="sunflowerStraw" densityMapChannelOffset="3" numDensityMapChannels="1" materialId="99004" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.4" numBlocksPerUnitMin="1.4" numBlocksPerUnitMax="1.4" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
 	</FoliageMultiLayer>
 
 
@@ -89,7 +89,7 @@ Instructions part 5 of 6:
 
 Add the following <IndexedTriangleSet> element  between  <Shapes externalShapesFile="map01.i3d.shapes"> and  </Shapes> in your own MAP.I3D.
 
-  <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="33333">
+  <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="3333333">
       <Vertices count="13" normal="true" uv0="true">
           <v p="-0.568026 0.0268561 0.568026" n="0 1 0" t0="0.00193999 0.400993"/>
           <v p="0.16839 0.0145988 0.91839" n="0 1 0" t0="0.272951 0.00502457"/>
@@ -171,5 +171,5 @@ If there´s no chopped straw in the game appearing, first check the log.txt. Wit
   *** ChoppedStraw v17.xx | specialization added to x vehicle types
   *** ChoppedStraw v17.xx | loading straw types
   *** ChoppedStraw v17.xx | loaded x straw types
-  
+
  In case of problems there are many Error messages that will lead you to the problem.

@@ -76,10 +76,10 @@ Füge den folgenden <FoliageMultiLayer>-Eintrag im <Layers>-Bereich deiner MAP.i
 
     <!-- choppedStraw foliage layers -->
 	<FoliageMultiLayer densityMapId="99993" numChannels="5" numTypeIndexChannels="0">
-		<FoliageSubLayer name="lightStraw" numDensityMapChannels="1" materialId="99001" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
-		<FoliageSubLayer name="darkStraw" densityMapChannelOffset="1" numDensityMapChannels="1" materialId="99002" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
-		<FoliageSubLayer name="maizeStraw" densityMapChannelOffset="2" numDensityMapChannels="1" materialId="99003" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.3" numBlocksPerUnitMin="1.3" numBlocksPerUnitMax="1.3" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
-		<FoliageSubLayer name="sunflowerStraw" densityMapChannelOffset="3" numDensityMapChannels="1" materialId="99004" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.4" numBlocksPerUnitMin="1.4" numBlocksPerUnitMax="1.4" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="33333"/>
+		<FoliageSubLayer name="lightStraw" numDensityMapChannels="1" materialId="99001" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
+		<FoliageSubLayer name="darkStraw" densityMapChannelOffset="1" numDensityMapChannels="1" materialId="99002" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.8" numBlocksPerUnitMin="1.8" numBlocksPerUnitMax="1.8" width="0.8" height="0.3" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
+		<FoliageSubLayer name="maizeStraw" densityMapChannelOffset="2" numDensityMapChannels="1" materialId="99003" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99984" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.3" numBlocksPerUnitMin="1.3" numBlocksPerUnitMax="1.3" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
+		<FoliageSubLayer name="sunflowerStraw" densityMapChannelOffset="3" numDensityMapChannels="1" materialId="99004" cellSize="8" viewDistance="80" objectMask="16711935" decalLayer="0" distanceMapIds="99985" distanceMapLayers="1" atlasSize="1" atlasOffsets="1 0" numBlocksPerUnitDefault="1.4" numBlocksPerUnitMin="1.4" numBlocksPerUnitMax="1.4" width="0.9" height="0.2" widthVariance="0.1" heightVariance="0.1" horizontalPositionVariance="0.3" blockShapeId="3333333"/>
 	</FoliageMultiLayer>
 
 
@@ -88,7 +88,7 @@ Anleitung Teil 5 von 6:
 
 Füge den folgenden <IndexedTriangleSet>-Eintrag zwischen  <Shapes externalShapesFile="map01.i3d.shapes"> und </Shapes> in deiner MAP.i3d ein
 
-  <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="33333">
+  <IndexedTriangleSet name="wheat_windrowBlockMesh" shapeId="3333333">
       <Vertices count="13" normal="true" uv0="true">
           <v p="-0.568026 0.0268561 0.568026" n="0 1 0" t0="0.00193999 0.400993"/>
           <v p="0.16839 0.0145988 0.91839" n="0 1 0" t0="0.272951 0.00502457"/>
@@ -159,7 +159,7 @@ Sind auf der Map weitere Fruchtsorten verbaut, die von choppedStraw berücksicht
   </strawType>
   Dazu muss natürlich auch der entsprechende FoliageSubLayer "oatStraw" eingebaut, sowie numChannels="x" im FoliageMultiLayer angepasst werden.
 
-Wichtig bei all diesen Einträgen ist, dass fruitType und strawType immer exakt die Schreibweise der Fruchttypen bzw. Strohlayer haben. 
+Wichtig bei all diesen Einträgen ist, dass fruitType und strawType immer exakt die Schreibweise der Fruchttypen bzw. Strohlayer haben.
 
 
 #######################
