@@ -113,7 +113,7 @@ function ChoppedStraw_Register:registerStrawTypes(csFile, key)
 	-- iterate over strawType tags
 	g_currentMission.cs_strawTypes = {};
 	g_currentMission.cs_strawBindings = {};
-	local a = 0;
+	local a = 1;
 	while true do
 		local strawTypeKey = key .. ('.strawType(%d)'):format(a);
 		if not hasXMLProperty(csFile, strawTypeKey) then
