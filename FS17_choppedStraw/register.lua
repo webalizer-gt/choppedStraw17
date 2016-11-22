@@ -83,7 +83,7 @@ Mission00.loadMission00Finished = function(self, node, arguments)
             if hasXMLProperty(csFile, key) then
                 logInfo(5,'loading straw types');
                 ChoppedStraw_Register:registerStrawTypes(csFile, key);
-                logInfo(5,('loaded %s straw types'):format(#g_currentMission.cs_strawTypes));
+                logInfo(5,('loaded %s straw types'):format(#g_currentMission.cs_strawTypes+1));
             else
                 logInfo(5,('Error: missing AddChoppedStraw in %s!'):format(xmlFilePath));
             end; -- END hasXMLProperty(csFile, key)
@@ -113,7 +113,7 @@ function ChoppedStraw_Register:registerStrawTypes(csFile, key)
 	-- iterate over strawType tags
 	g_currentMission.cs_strawTypes = {};
 	g_currentMission.cs_strawBindings = {};
-	local a = 1;
+	local a = 0;
 	while true do
 		local strawTypeKey = key .. ('.strawType(%d)'):format(a);
 		if not hasXMLProperty(csFile, strawTypeKey) then
