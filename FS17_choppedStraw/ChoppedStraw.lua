@@ -146,6 +146,7 @@ function ChoppedStraw:getAreas()
 		end;
 	end;
 
+	local workWidth = math.ceil(math.abs(wwMax-wwMin));
 	local wwCenter = 0;
 	if workWidth > .1 then
 		wwCenter = (wwMin+wwMax)/2;
