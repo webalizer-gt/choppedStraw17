@@ -83,6 +83,18 @@ Mission00.loadMission00Finished = function(self, node, arguments)
             if hasXMLProperty(csFile, key) then
                 logInfo(5,'loading straw types');
                 ChoppedStraw_Register:registerStrawTypes(csFile, key);
+				
+				local fruitString = "";
+				for key,entry in pairs(g_currentMission.cs_strawBindings) do
+					if g_currentMission.cs_strawTypes[entry.strawTypeId].allowFertilization then
+						fruitString = fruitString..key.." ";
+					end;
+				end;
+				if g_currentMission.cs_globalFertilization then
+					logInfo(5,('fertilizing fruittypes: %s'):format(fruitString));
+				else
+					logInfo(5,('fertilization disabled on this map!'));
+				end;
                 logInfo(5,('loaded %s straw types'):format(#g_currentMission.cs_strawTypes+1));
             else
                 logInfo(5,('Error: missing AddChoppedStraw in %s!'):format(xmlFilePath));
