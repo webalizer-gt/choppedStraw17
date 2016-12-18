@@ -210,7 +210,7 @@ function ChoppedStraw_Register.processStrawArea(startWorldX, startWorldZ, widthW
              -- increase spray level
             addDensityMaskedParallelogram(detailId, x,z, widthX,widthZ, heightX,heightZ, g_currentMission.sprayLevelFirstChannel, g_currentMission.sprayLevelNumChannels, entry.foliageId, 0, 1, 1);
             -- set visible spray level
-            setDensityMaskedParallelogram(detailId, x,z, widthX,widthZ, heightX,heightZ, g_currentMission.sprayFirstChannel, g_currentMission.sprayNumChannels, entry.foliageId, 0, 1, 1.0);
+            setDensityMaskedParallelogram(detailId, x,z, widthX,widthZ, heightX,heightZ, g_currentMission.sprayFirstChannel, g_currentMission.sprayNumChannels, entry.foliageId, 0, 1, 0);
             setDensityMaskParams(entry.foliageId, "greater", 0);
         end;
         -- remove layer
