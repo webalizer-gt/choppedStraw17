@@ -147,18 +147,18 @@ Now the basic installation on a map with standard fruits is done. The following 
 
 If more fruit types are installed on the map, which should be used by choppedStraw, you need additional entries in this file There are two possibilities:
 1. If the fruit "oat" should use the existing "lightStraw", a new binding has to be added:
-  <strawType name="lightStraw" allowFertilization="true">
-    <binding fruitType="wheat" strawOutputFront="false" />
-    <binding fruitType="barley" strawOutputFront="false" />
+  <strawType name="lightStraw" allowFertilization="true">
+    <binding fruitType="wheat" strawOutputFront="false" />
+    <binding fruitType="barley" strawOutputFront="false" />
 	<binding fruitType="soybean" strawOutputFront="false" />
-    <binding fruitType="oat" strawOutputFront="false" />
-  </strawType>
+    <binding fruitType="oat" strawOutputFront="false" />
+  </strawType>
 
 2. If the fruit "oat" should use a new straw type "oatStraw", a complete strawType with binding must be added:
-  <strawType name="oatStraw" allowFertilization="true">
-    <binding fruitType="oat" strawOutputFront="false" />
-  </strawType>
-  when doing it that way, the corresponding FoliageSubLayer "oatStraw" must also be installed, as well as numChannels = "x" in the FoliageMultiLayer has to be altered.
+  <strawType name="oatStraw" allowFertilization="true">
+    <binding fruitType="oat" strawOutputFront="false" />
+  </strawType>
+  when doing it that way, the corresponding FoliageSubLayer "oatStraw" must also be installed, as well as numChannels = "x" in the FoliageMultiLayer has to be altered.
 
 Important for all these entries is that fruitType and strawType always have the exact same spelling in your MAP.i3D and addStrawTypes.xml.
 
@@ -173,3 +173,4 @@ If there´s no chopped straw in the game appearing, first check the log.txt. Wit
   *** ChoppedStraw v17.xx | loaded x straw types
 
  In case of problems there are many Error messages that will lead you to the problem.
+ 
