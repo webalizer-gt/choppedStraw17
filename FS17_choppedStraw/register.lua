@@ -31,7 +31,7 @@ function ChoppedStraw_Register:loadMap(name)
 	for k, v in pairs(VehicleTypeUtil.vehicleTypes) do
 		if v ~= nil then
 			-- has Combine spec -> continue
-			local allowInsertion = SpecializationUtil.hasSpecialization(Combine, v.specializations) and not SpecializationUtil.hasSpecialization(FruitPreparer, v.specializations);
+			local allowInsertion = SpecializationUtil.hasSpecialization(Combine, v.specializations) and not SpecializationUtil.hasSpecialization(FruitPreparer, v.specializations) and not SpecializationUtil.hasSpecialization(Attachable, v.specializations);
 
 			--local customEnvironment;
 			if allowInsertion then

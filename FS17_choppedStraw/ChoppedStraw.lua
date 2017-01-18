@@ -178,7 +178,7 @@ function ChoppedStraw:createCStrawArea()
 	local combineAreas =  self:getTypedWorkAreas(WorkArea.AREATYPE_COMBINE);
 	logInfo(1,('combineAreas: %s'):format(combineAreas));
 	for _,strawArea in pairs(combineAreas) do
-		local x2,y2,z2 = getWorldTranslation(strawArea.width);
+		local x2,y2,z2 = getWorldTranslation(strawArea.start);
 		local lx2,ly2,lz2 = worldToLocal(self.rootNode,x2,y2,z2);
 		self.strawXOffset = lx2;
 		logInfo(1,('self.strawXOffset: %s'):format(self.strawXOffset));
@@ -189,22 +189,36 @@ function ChoppedStraw:createCStrawArea()
 	local startId1 = createTransformGroup("start1");
 	link(self.strawNodeId, startId1);
 	local heightId1 = createTransformGroup("height1");
-	link(self.strawNodeId, heightId1);
+	link(startId1, heightId1);
 	local widthId1 = createTransformGroup("width1");
-	link(self.strawNodeId, widthId1);
+	link(startId1, widthId1);
 	table.insert(cStrawAreas, {start=startId1,width=widthId1,height=heightId1});
 	return cStrawAreas;
 end;
 
 function ChoppedStraw:setCStrawArea(caxMin, caxMax, cay, caz, caWW, caCenter)
-	local strawXOffset = self.strawXOffset;
-	local strawZOffset = self.strawZOffset;
-	local xMin = (caWW/2 + strawXOffset)*-1;
-	local xMax = (caWW/2 + strawXOffset);
-	local center = caCenter + strawXOffset;
+	local strawXOffset = 0;
+	local strawZOffset = 0;
+	local xMin = 0;
+	local xMax = 0;
+	local center = 0;
+	local y = 0;	
+	
+	strawXOffset = self.strawXOffset;
+	strawZOffset = self.strawZOffset;
+	if strawXOffset < 0 then
+		strawXOffset = math.abs(strawXOffset);
+		center = caCenter + strawXOffset;		
+	else
+		strawXOffset = math.abs(strawXOffset);
+		center = caCenter - strawXOffset;
+	end;
+	xMin = -(caWW / 2);
+	xMax = (caWW / 2);
 	local y = cay;
+	logInfo(1,('setCStrawArea | xMin: %s, xMax: %s, center: %s, y: %s'):format(xMin,xMax,center,y));
 
 	setTranslation(self.cStrawAreas[1].start,center,y,strawZOffset);
-	setTranslation(self.cStrawAreas[1].width,xMax,y,strawZOffset -2);
-	setTranslation(self.cStrawAreas[1].height,xMin,y,strawZOffset -2);
+	setTranslation(self.cStrawAreas[1].width,xMax,y,strawZOffset -1.5);
+	setTranslation(self.cStrawAreas[1].height,xMin,y,strawZOffset -1.5);
 end;
